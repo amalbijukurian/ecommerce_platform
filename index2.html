@@ -1,0 +1,928 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Cute Shop — Stationery & Gifts</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&family=Nunito:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg-gradient: linear-gradient(135deg, #f5e6ff 0%, #fff0f5 100%);
+        --primary: #d6b6f6;
+        --accent: #ffb5ea;
+        --pink: #ffc5dc;
+        --lavender: #e0c3fc;
+        --white: #fff;
+        --gray: #f6f6f6;
+        --shadow: 0 2px 16px rgba(224, 195, 252, 0.15);
+        --radius: 18px;
+        --icon-size: 26px;
+      }
+      body {
+        margin: 0;
+        font-family: 'Poppins', 'Nunito', Arial, sans-serif;
+        background: var(--bg-gradient);
+        color: #633380;
+      }
+      .sticky-header {
+        backdrop-filter: blur(10px);
+        background: rgba(255, 230, 255, 0.95);
+        position: sticky;
+        top: 0;
+        z-index: 99;
+        padding: 0.6rem 0;
+        box-shadow: var(--shadow);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+      .logo {
+        font-family: 'Nunito', cursive;
+        font-weight: bold;
+        font-size: 2rem;
+        color: #d79be2;
+        letter-spacing: 2px;
+        margin-left: 22px;
+      }
+      .header-actions {
+        display: flex;
+        align-items: center;
+        gap: 22px;
+        margin-right: 22px;
+      }
+      .header-actions input[type='text'] {
+        padding: 0.45rem 1rem;
+        font-size: 1rem;
+        border-radius: var(--radius);
+        border: 1.5px solid #ededed;
+        outline: none;
+        font-family: inherit;
+        background: var(--white);
+        box-shadow: 0 2px 13px #ffd5f8b7;
+      }
+      .icon-btn {
+        background: transparent;
+        border: none;
+        outline: none;
+        cursor: pointer;
+        position: relative;
+        transition: transform 0.18s;
+      }
+      .icon-btn.cart:after,
+      .icon-btn.wishlist:after {
+        content: attr(data-count);
+        position: absolute;
+        top: -8px;
+        right: -8px;
+        background: var(--accent);
+        color: var(--white);
+        border-radius: 50%;
+        padding: 0 7px;
+        font-size: 0.85rem;
+        font-weight: bold;
+        min-width: 20px;
+        text-align: center;
+        display: var(--afterDisplay);
+      }
+      .icon-btn:hover {
+        transform: scale(1.15) rotate(-7deg);
+      }
+      .banner-slider {
+        width: 100%;
+        margin: 0 auto 1rem auto;
+        padding: 1.4rem 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        background: linear-gradient(90deg, #e0c3fc 25%, #ffb5ea 85%);
+      }
+      .banner-slide {
+        background: var(--lavender);
+        color: #864caa;
+        font-family: 'Nunito', cursive;
+        font-size: 1.35rem;
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        padding: 0.85rem 2.5rem;
+        margin: 0 8px;
+        min-width: 200px;
+        text-align: center;
+        animation: fadeIn 0.65s;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+      .categories {
+        display: flex;
+        gap: 1.8rem;
+        justify-content: center;
+        flex-wrap: wrap;
+        padding: 2rem 0 0.6rem 0;
+      }
+      .category-card {
+        padding: 1rem 2.4rem;
+        background: linear-gradient(135deg, var(--white) 65%, var(--pink) 100%);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        font-size: 1.1rem;
+        font-family: 'Nunito', cursive;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        transition: background 0.15s, box-shadow 0.15s, transform 0.15s;
+        font-weight: bold;
+        border: 2px solid #ffe9fa;
+        margin-bottom: 1rem;
+      }
+      .category-card:hover,
+      .category-card.active {
+        background: linear-gradient(135deg, #ffe9fa 50%, #f5e6ff 100%);
+        box-shadow: 0 6px 24px #e0c3fc66;
+        transform: translateY(-2px) scale(1.05);
+        border: 2px solid #d6b6f6;
+      }
+      .products-list {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 2.2rem;
+        margin: 2rem 6vw;
+        padding: 1rem 0 3rem 0;
+      }
+      .product-card {
+        background: var(--white);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        text-align: center;
+        padding: 1.1rem 0.9rem 1.2rem 0.9rem;
+        position: relative;
+        transition: transform 0.18s, box-shadow 0.18s;
+        will-change: transform;
+        cursor: pointer;
+      }
+      .product-card:hover {
+        transform: scale(1.04) translateY(-4px);
+        box-shadow: 0 8px 28px #e0c3fc50;
+        z-index: 2;
+      }
+      .product-img {
+        width: 95px;
+        height: 95px;
+        margin-bottom: 0.7rem;
+        border-radius: 20px;
+        object-fit: cover;
+        box-shadow: 0 3px 16px #ffb5ea33;
+        background: var(--gray);
+      }
+      .product-title {
+        font-weight: bold;
+        font-size: 1.09rem;
+      }
+      .product-category {
+        color: #b47fc5;
+        font-size: 0.95rem;
+        margin-bottom: 0.3rem;
+      }
+      .product-price {
+        color: var(--accent);
+        font-size: 1.05rem;
+        font-weight: bold;
+        margin: 0.9rem 0 0.3rem 0;
+      }
+      .card-actions {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+        align-items: center;
+        margin-top: 0.6rem;
+      }
+      .wishlist-btn {
+        background: transparent;
+        border: none;
+        font-size: 1.6rem;
+        cursor: pointer;
+        color: #d6b6f6;
+        transition: color 0.22s;
+      }
+      .wishlist-btn.active {
+        color: #ff6eb5;
+        text-shadow: 0 2px 8px #ffb5ea88;
+      }
+      .cart-btn {
+        background: linear-gradient(135deg, #ffb5ea 55%, var(--primary) 100%);
+        border: none;
+        outline: none;
+        color: #fff;
+        font-family: 'Poppins', sans-serif;
+        font-weight: 700;
+        border-radius: 12px;
+        padding: 0.4rem 1rem;
+        font-size: 1.01rem;
+        cursor: pointer;
+        transition: background 0.17s, transform 0.16s;
+        box-shadow: 0 2.5px 10px #ffe9fa77;
+      }
+      .cart-btn:hover {
+        background: linear-gradient(135deg, #d6b6f6 65%, #ffb5ea 100%);
+        transform: scale(1.08);
+        box-shadow: 0 7px 18px #d6b6f660;
+      }
+      /* Cart/Wishlist/Checkout Modal Styles */
+      .modal {
+        display: none;
+        position: fixed;
+        z-index: 120;
+        left: 0;
+        top: 0;
+        width: 100vw;
+        height: 100vh;
+        background: rgba(238, 210, 255, 0.3);
+        justify-content: center;
+        align-items: center;
+        transition: opacity 0.3s;
+      }
+      .modal.active {
+        display: flex;
+      }
+      .modal-box {
+        background: var(--white);
+        border-radius: 24px;
+        width: 95vw;
+        max-width: 430px;
+        box-shadow: 0 12px 48px #d6b6f660;
+        padding: 2rem 1.2rem;
+        position: relative;
+        font-family: 'Poppins', sans-serif;
+        animation: fadeIn 0.4s;
+      }
+      .modal-header {
+        font-size: 1.35rem;
+        font-family: 'Nunito', cursive;
+        color: #d6b6f6;
+        font-weight: bold;
+        margin-bottom: 1.2rem;
+        letter-spacing: 1px;
+      }
+      .modal-close {
+        position: absolute;
+        right: 12px;
+        top: 12px;
+        font-size: 1.6rem;
+        background: none;
+        border: none;
+        color: #ffb5ea;
+        cursor: pointer;
+        transition: color 0.2s;
+      }
+      .modal-close:hover {
+        color: #864caa;
+      }
+      /* Product Modal Custom Styling */
+      #productModalBox img {
+        width: 260px;
+        height: 260px;
+        border-radius: 22px;
+        object-fit: cover;
+        box-shadow: 0 6px 36px #d6b6f633;
+        border: 3px solid #ffe9fa;
+        margin: 0 auto 1rem auto;
+        display: block;
+      }
+      #productModalBox .modal-details {
+        text-align: center;
+        margin-bottom: 1.2rem;
+      }
+      #productModalBox .modal-title {
+        font-size: 1.5rem;
+        color: #d79be2;
+        font-family: 'Nunito', cursive;
+        font-weight: bold;
+      }
+      #productModalBox .modal-category {
+        color: #b47fc5;
+        font-size: 1.1rem;
+        margin: 0.6rem 0 0.3rem 0;
+      }
+      #productModalBox .modal-price {
+        color: var(--accent);
+        font-size: 1.28rem;
+        margin-bottom: 0.8rem;
+        font-weight: bold;
+      }
+      #productModalBox .modal-description {
+        background: #f5e6ff;
+        color: #633380;
+        font-size: 1.07rem;
+        border-radius: 15px;
+        padding: 1rem 1.1rem;
+        box-shadow: 0 2px 14px #e0c3fc25;
+        margin-bottom: 1.05rem;
+      }
+      /* Toast/Poupup */
+      .toast {
+        position: fixed;
+        left: 50%;
+        bottom: 3rem;
+        transform: translateX(-50%);
+        background: linear-gradient(90deg, #ffb5ea, #d6b6f6);
+        color: #fff;
+        font-family: 'Nunito', cursive;
+        font-size: 1.09rem;
+        padding: 0.7rem 1.7rem;
+        border-radius: 14px;
+        box-shadow: 0 6px 30px #d6b6f6a8;
+        opacity: 0;
+        pointer-events: none;
+        transition: all 0.32s;
+        z-index: 200;
+      }
+      .toast.show {
+        opacity: 1;
+        pointer-events: auto;
+        bottom: 4rem;
+      }
+      footer {
+        background: linear-gradient(90deg, #e0c3fc 50%, #ffb5ea 100%);
+        color: #633380;
+        text-align: center;
+        padding: 2rem 0 1rem 0;
+        font-family: 'Nunito', cursive;
+        letter-spacing: 1px;
+        border-radius: var(--radius) var(--radius) 0 0;
+        margin-top: 2rem;
+        font-size: 1rem;
+      }
+      .footer-links a {
+        color: #864caa;
+        margin: 0 8px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: color 0.16s;
+      }
+      .footer-links a:hover {
+        color: #ff7ecb;
+      }
+      @media (max-width: 900px) {
+        .products-list {
+          margin: 2rem 2vw;
+        }
+      }
+      @media (max-width: 600px) {
+        .categories {
+          gap: 1rem;
+        }
+        .products-list {
+          grid-template-columns: 1fr 1fr;
+          gap: 1rem;
+          margin: 1rem 1vw;
+        }
+        .sticky-header {
+          font-size: 0.95rem;
+        }
+        .logo {
+          font-size: 1.3rem;
+        }
+        #productModalBox img {
+          width: 175px;
+          height: 175px;
+        }
+        #productModalBox .modal-title {
+          font-size: 1.17rem;
+        }
+      }
+      @media (max-width: 440px) {
+        .products-list {
+          grid-template-columns: 1fr;
+        }
+        .product-card {
+          padding: 0.5rem 0.4rem;
+        }
+        .categories {
+          flex-direction: column;
+          gap: 0.6rem;
+          padding-bottom: 1rem;
+        }
+        .category-card {
+          padding: 0.8rem 1rem;
+        }
+        .modal-box {
+          padding: 1.2rem 0.4rem;
+        }
+        #productModalBox img {
+          width: 120px;
+          height: 120px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="sticky-header">
+      <div class="logo">Cute Shop</div>
+      <div class="header-actions">
+        <input
+          type="text"
+          id="searchInput"
+          placeholder="Search adorable finds..."
+        />
+        <button
+          class="icon-btn wishlist"
+          title="Wishlist"
+          id="wishlistBtn"
+          data-count="0"
+        >
+          <span style="font-size: var(--icon-size); color: #ff8bcc"
+            >&#10084;</span
+          >
+        </button>
+        <button class="icon-btn cart" title="Cart" id="cartBtn" data-count="0">
+          <span style="font-size: var(--icon-size); color: #864caa"
+            >&#128722;</span
+          >
+        </button>
+      </div>
+    </header>
+    <div class="banner-slider" id="bannerSlider"></div>
+    <div class="categories" id="categories"></div>
+    <main>
+      <section class="products-list" id="productsList"></section>
+    </main>
+    <!-- Product Details Modal -->
+    <div class="modal" id="productModal">
+      <div class="modal-box" id="productModalBox" style="max-width: 520px">
+        <button
+          class="modal-close"
+          onclick="closeModal('productModal')"
+          style="font-size: 2rem"
+        >
+          &times;
+        </button>
+        <div id="modalContent"></div>
+      </div>
+    </div>
+    <!-- Cart/Wishlist/Checkout Modals -->
+    <div class="modal" id="cartModal">
+      <div class="modal-box">
+        <button class="modal-close" onclick="closeModal('cartModal')">
+          &times;
+        </button>
+        <div class="modal-header">Your Cart</div>
+        <div id="cartItems"></div>
+        <div style="margin-top: 1rem">
+          <button
+            onclick="showCheckout()"
+            class="cart-btn"
+            style="font-size: 1.02rem"
+          >
+            Checkout
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="modal" id="wishlistModal">
+      <div class="modal-box">
+        <button class="modal-close" onclick="closeModal('wishlistModal')">
+          &times;
+        </button>
+        <div class="modal-header">Your Wishlist</div>
+        <div id="wishlistItems"></div>
+      </div>
+    </div>
+    <div class="modal" id="checkoutModal">
+      <div class="modal-box">
+        <button class="modal-close" onclick="closeModal('checkoutModal')">
+          &times;
+        </button>
+        <div class="modal-header">Order Summary</div>
+        <div id="orderSummary"></div>
+        <button
+          onclick="placeOrder()"
+          class="cart-btn"
+          style="margin-top: 1.2rem; font-size: 1.08rem"
+        >
+          Place Order
+        </button>
+      </div>
+    </div>
+    <div class="toast" id="toast"></div>
+    <footer>
+      <div>Made with &#10084; | Cute Shop &copy; 2025</div>
+      <div class="footer-links">
+        <a href="#">Instagram</a> · <a href="#">Twitter</a> ·
+        <a href="#">Email: hello@cuteshop.test</a>
+      </div>
+    </footer>
+    <script>
+      /* --------- DATA -------- */
+      const categories = [
+        { name: 'Stationery', icon: '&#128396;' },
+        { name: 'Plush Toys', icon: '&#128059;' },
+        { name: 'Beauty', icon: '&#127872;' },
+        { name: 'Home Decor', icon: '&#127968;' },
+      ];
+      const products = [
+        {
+          id: 'p1',
+          title: 'Kawaii Cat Pen',
+          category: 'Stationery',
+          price: 79,
+          img: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80',
+          desc: 'Cute and comfy cat-shaped pen for your class notes or journal. Writes smoothly in blue ink.',
+        },
+        {
+          id: 'p2',
+          title: 'Pastel Bunny Plush',
+          category: 'Plush Toys',
+          price: 349,
+          img: 'https://images.pexels.com/photos/1462636/pexels-photo-1462636.jpeg?auto=compress&w=400',
+          desc: 'Soft, huggable bunny plush with pastel colors. Perfect for gifts and cozy naps.',
+        },
+        {
+          id: 'p3',
+          title: 'Lavender Hand Cream',
+          category: 'Beauty',
+          price: 139,
+          img: 'https://images.pexels.com/photos/2270834/pexels-photo-2270834.jpeg?auto=compress&w=400',
+          desc: 'Light lavender-scented hand cream. Moisturizes and softens for silky smooth hands.',
+        },
+        {
+          id: 'p4',
+          title: 'Cloud Pillow',
+          category: 'Home Decor',
+          price: 260,
+          img: 'https://images.unsplash.com/photo-1526178613658-3e1f28221885?auto=format&fit=crop&w=400&q=80',
+          desc: 'Dreamy pillow in cloud shape with smiley face. Ultra-soft for beds and sofas.',
+        },
+        {
+          id: 'p5',
+          title: 'Sakura Sticky Notes',
+          category: 'Stationery',
+          price: 59,
+          img: 'https://images.pexels.com/photos/3754067/pexels-photo-3754067.jpeg?auto=compress&w=400',
+          desc: 'Floral sticky notes inspired by Sakura blossoms. Make lists, bookmarks, or reminders cuter!',
+        },
+        {
+          id: 'p6',
+          title: 'Chubby Bear Plush',
+          category: 'Plush Toys',
+          price: 399,
+          img: 'https://images.pexels.com/photos/1108099/pexels-photo-1108099.jpeg?auto=compress&w=400',
+          desc: 'Super cuddly chubby bear plush—your best friend for hugs. Great for kids and grown-ups.',
+        },
+        {
+          id: 'p7',
+          title: 'Cute Cosmetics Bag',
+          category: 'Beauty',
+          price: 210,
+          img: 'https://images.unsplash.com/photo-1585386959984-a4155224c3b5?auto=format&fit=crop&w=400&q=80',
+          desc: 'Organize your beauty must-haves with this pastel zip bag. Waterproof lining.',
+        },
+        {
+          id: 'p8',
+          title: 'Rainbow Mug',
+          category: 'Home Decor',
+          price: 179,
+          img: 'https://images.pexels.com/photos/1108099/pexels-photo-1108099.jpeg?auto=compress&w=400',
+          desc: 'Ceramic cup with rainbow print and glossy finish. Sip tea and coffee with joy each day.',
+        },
+        {
+          id: 'p9',
+          title: 'Pink Gel Highlighter',
+          category: 'Stationery',
+          price: 49,
+          img: 'https://images.pexels.com/photos/461429/pexels-photo-461429.jpeg?auto=compress&w=400',
+          desc: 'Smooth pink highlighter for pretty notes, planners, and creative art.',
+        },
+        {
+          id: 'p10',
+          title: 'Stars Plush',
+          category: 'Plush Toys',
+          price: 359,
+          img: 'https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=400&q=80',
+          desc: 'Twinkling stars plush for dreaming big at night. Perfect for decorations or snuggles.',
+        },
+        {
+          id: 'p11',
+          title: 'Blush Heart Pillow',
+          category: 'Home Decor',
+          price: 249,
+          img: 'https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=400&q=80',
+          desc: 'Soft pink heart-shaped pillow, perfect for your couch or bedroom retreat.',
+        },
+        {
+          id: 'p12',
+          title: 'Candy Compact Mirror',
+          category: 'Beauty',
+          price: 99,
+          img: 'https://images.unsplash.com/photo-1600259444028-0af6cfa4e4ae?auto=format&fit=crop&w=400&q=80',
+          desc: 'Pocket compact mirror with candy color shell. See your reflection anywhere, anytime.',
+        },
+      ];
+      const banners = [
+        'Festive Sale! 🎉 Buy 2 Get 1 Free!',
+        'New Arrivals: Plushies & Stationery 🐰🖊️',
+        'Free Shipping on Orders Over ₹499 🚚',
+        'Limited Edition Pastel Gifts — Until Sunday!',
+        'Kawaii Restocks: Cats, Bears, Bunnies! 🐱🐻🐰',
+      ];
+      /* --------- ELEMENTS -------- */
+      const categoriesEl = document.getElementById('categories');
+      const productsListEl = document.getElementById('productsList');
+      const bannerSliderEl = document.getElementById('bannerSlider');
+      const searchInputEl = document.getElementById('searchInput');
+      const cartBtnEl = document.getElementById('cartBtn');
+      const wishlistBtnEl = document.getElementById('wishlistBtn');
+      /* --------- RENDER BANNERS -------- */
+      let bannerIdx = 0;
+      function showBanner(idx) {
+        bannerSliderEl.innerHTML = `<div class="banner-slide">${banners[idx]}</div>`;
+      }
+      showBanner(bannerIdx);
+      setInterval(() => {
+        bannerIdx = (bannerIdx + 1) % banners.length;
+        showBanner(bannerIdx);
+      }, 3600);
+      /* --------- RENDER CATEGORIES -------- */
+      let currentCategory = 'All';
+      function renderCategories() {
+        categoriesEl.innerHTML = '';
+        const allBtn = document.createElement('div');
+        allBtn.className =
+          'category-card' + (currentCategory === 'All' ? ' active' : '');
+        allBtn.innerHTML = `<span style="font-size:1.5rem;">&#127872;</span> All`;
+        allBtn.onclick = () => {
+          currentCategory = 'All';
+          renderCategories();
+          renderProducts();
+        };
+        categoriesEl.appendChild(allBtn);
+        categories.forEach(cat => {
+          const btn = document.createElement('div');
+          btn.className =
+            'category-card' + (currentCategory === cat.name ? ' active' : '');
+          btn.innerHTML = `<span style="font-size:1.5rem;">${cat.icon}</span> ${cat.name}`;
+          btn.onclick = () => {
+            currentCategory = cat.name;
+            renderCategories();
+            renderProducts();
+          };
+          categoriesEl.appendChild(btn);
+        });
+      }
+      renderCategories();
+      /* --------- WISHLIST/CART (localStorage sync) -------- */
+      function getLS(key, def) {
+        try {
+          return JSON.parse(localStorage.getItem(key)) || def;
+        } catch {
+          return def;
+        }
+      }
+      let wishlist = getLS('wishlist', []);
+      let cart = getLS('cart', []);
+      /* --------- RENDER PRODUCTS -------- */
+      function renderProducts() {
+        let term = searchInputEl.value.toLowerCase().trim();
+        let filtered = products.filter(p => {
+          let matchCat =
+            currentCategory === 'All' || p.category === currentCategory;
+          let matchSearch =
+            !term ||
+            p.title.toLowerCase().includes(term) ||
+            p.category.toLowerCase().includes(term);
+          return matchCat && matchSearch;
+        });
+        productsListEl.innerHTML = '';
+        filtered.forEach(p => {
+          const inWishlist = wishlist.includes(p.id);
+          const cartItem = cart.find(ci => ci.id === p.id);
+          const card = document.createElement('div');
+          card.className = 'product-card';
+          card.onclick = () => showProductModal(p.id);
+          card.innerHTML = `
+          <img src="${p.img}" alt="${p.title}" class="product-img">
+          <div class="product-category">${p.category}</div>
+          <div class="product-title">${p.title}</div>
+          <div class="product-price">₹${p.price}</div>
+          <div class="card-actions" onclick="event.stopPropagation()">
+            <button class="wishlist-btn${
+              inWishlist ? ' active' : ''
+            }" title="Add to Wishlist" onclick="toggleWishlist('${
+            p.id
+          }', event)">
+              &#10084;
+            </button>
+            <button class="cart-btn" onclick="addToCart('${p.id}', event)">
+              ${cartItem ? 'Add More' : 'Add to Cart'}
+            </button>
+          </div>
+          ${
+            cartItem
+              ? '<div style="font-size:0.97rem;margin-top:3px;color:#b47fc5;">In Cart: ' +
+                cartItem.qty +
+                '</div>'
+              : ''
+          }
+        `;
+          productsListEl.appendChild(card);
+        });
+      }
+      // Prevent inner button clicks from closing modal
+      function toggleWishlist(id, evt) {
+        evt.stopPropagation();
+        if (wishlist.includes(id)) {
+          wishlist = wishlist.filter(wid => wid !== id);
+          showToast('Removed from wishlist!');
+        } else {
+          wishlist.push(id);
+          showToast('Added to wishlist!');
+        }
+        localStorage.setItem('wishlist', JSON.stringify(wishlist));
+        updateIcons();
+        renderProducts();
+      }
+      function addToCart(id, evt) {
+        evt.stopPropagation();
+        let cartItem = cart.find(ci => ci.id === id);
+        if (cartItem) {
+          cartItem.qty++;
+          showToast('Added more to cart!');
+        } else {
+          cart.push({ id: id, qty: 1 });
+          showToast('Added to cart!');
+        }
+        localStorage.setItem('cart', JSON.stringify(cart));
+        updateIcons();
+        renderProducts();
+      }
+      searchInputEl.oninput = () => renderProducts();
+      renderProducts();
+      /* --------- PRODUCT MODAL -------- */
+      function showProductModal(pid) {
+        const prod = products.find(p => p.id === pid);
+        if (!prod) return;
+        document.getElementById('productModal').classList.add('active');
+        let html = `
+        <img src="${prod.img}" alt="${prod.title}" />
+        <div class="modal-details">
+          <div class="modal-title">${prod.title}</div>
+          <div class="modal-category">${prod.category}</div>
+          <div class="modal-price">₹${prod.price}</div>
+        </div>
+        <div class="modal-description">${
+          prod.desc || 'No description available.'
+        }</div>
+      `;
+        document.getElementById('modalContent').innerHTML = html;
+      }
+      /* --------- WISHLIST -------- */
+      function updateIcons() {
+        wishlistBtnEl.setAttribute('data-count', wishlist.length);
+        cartBtnEl.setAttribute(
+          'data-count',
+          cart.reduce((sum, ci) => sum + ci.qty, 0)
+        );
+        wishlistBtnEl.style.setProperty(
+          '--afterDisplay',
+          wishlist.length ? 'block' : 'none'
+        );
+        cartBtnEl.style.setProperty(
+          '--afterDisplay',
+          cart.length ? 'block' : 'none'
+        );
+      }
+      updateIcons();
+      wishlistBtnEl.onclick = () => showWishlist();
+      cartBtnEl.onclick = () => showCart();
+      function showCart() {
+        const modal = document.getElementById('cartModal');
+        modal.classList.add('active');
+        const cartItemsEl = document.getElementById('cartItems');
+        if (!cart.length) {
+          cartItemsEl.innerHTML = `<div>Your cart is empty!</div>`;
+          return;
+        }
+        cartItemsEl.innerHTML =
+          cart
+            .map(ci => {
+              const prod = products.find(p => p.id === ci.id);
+              return `
+            <div style="margin:1rem 0;">
+              <img src="${prod.img}" alt="" style="width:33px;height:33px;border-radius:12px;vertical-align:middle;margin-right:12px;">
+              <span>${prod.title}</span> 
+              (<span style="font-weight:bold;">${ci.qty}</span> x ₹${prod.price}) 
+              <button onclick="removeCart('${prod.id}')" style="background:var(--accent);color:#fff;border:none;outline:none;border-radius:5px;font-size:0.9rem;padding:0.15rem 0.7rem;margin-left:8px;cursor:pointer;">✗</button>
+            </div>`;
+            })
+            .join('') +
+          `<div style="margin-top:1.3rem;font-weight:bold;color:#d79be2;">Subtotal: ₹${cart.reduce(
+            (sum, ci) =>
+              sum + products.find(p => p.id === ci.id).price * ci.qty,
+            0
+          )}</div>`;
+      }
+      function showWishlist() {
+        const modal = document.getElementById('wishlistModal');
+        modal.classList.add('active');
+        const wishlistItemsEl = document.getElementById('wishlistItems');
+        if (!wishlist.length) {
+          wishlistItemsEl.innerHTML = `<div>Your wishlist is empty!</div>`;
+          return;
+        }
+        wishlistItemsEl.innerHTML = wishlist
+          .map(wid => {
+            const prod = products.find(p => p.id === wid);
+            return `
+          <div style="margin:1rem 0;">
+            <img src="${prod.img}" alt="" style="width:37px;height:37px;border-radius:12px;vertical-align:middle;margin-right:10px;">
+            <span>${prod.title}</span>
+            <button onclick="toggleWishlist('${prod.id}', event)" style="background:var(--primary);color:#fff;border:none;outline:none;border-radius:5px;font-size:0.9rem;padding:0.13rem 0.65rem;margin-left:9px;cursor:pointer;">♥</button>
+          </div>
+        `;
+          })
+          .join('');
+      }
+      function closeModal(id) {
+        document.getElementById(id).classList.remove('active');
+      }
+      function removeCart(id) {
+        cart = cart.filter(ci => ci.id !== id);
+        localStorage.setItem('cart', JSON.stringify(cart));
+        updateIcons();
+        showCart();
+        renderProducts();
+      }
+      function showCheckout() {
+        closeModal('cartModal');
+        const modal = document.getElementById('checkoutModal');
+        modal.classList.add('active');
+        const orderSummaryEl = document.getElementById('orderSummary');
+        if (!cart.length) {
+          orderSummaryEl.innerHTML = 'Your cart is empty!';
+          return;
+        }
+        let subtotal = cart.reduce(
+          (sum, ci) => sum + products.find(p => p.id === ci.id).price * ci.qty,
+          0
+        );
+        let delivery = subtotal >= 499 ? 0 : 59;
+        orderSummaryEl.innerHTML =
+          cart
+            .map(ci => {
+              const prod = products.find(p => p.id === ci.id);
+              return `
+            <div style="margin:9px 0;">
+              <img src="${
+                prod.img
+              }" style="width:32px;height:32px;border-radius:10px;vertical-align:middle;margin-right:11px;">
+              ${prod.title} × ${ci.qty} = <span style="font-weight:bold;">₹${
+                prod.price * ci.qty
+              }</span>
+            </div>
+          `;
+            })
+            .join('') +
+          `<div style="margin:13px 0 0 0;font-size:1.08rem;">
+          <div>Subtotal: <strong>₹${subtotal}</strong></div>
+          <div>Delivery: <strong>₹${delivery}</strong></div>
+          <div style="color:#d79be2;font-weight:700;">Total: ₹${
+            subtotal + delivery
+          }</div>
+        </div>
+        `;
+      }
+      function placeOrder() {
+        showToast('Order placed! Thank you 💜');
+        cart = [];
+        localStorage.setItem('cart', JSON.stringify([]));
+        updateIcons();
+        closeModal('checkoutModal');
+        renderProducts();
+      }
+      function showToast(msg) {
+        const toast = document.getElementById('toast');
+        toast.textContent = msg;
+        toast.classList.add('show');
+        setTimeout(() => {
+          toast.classList.remove('show');
+        }, 1700);
+      }
+      renderProducts();
+      searchInputEl.addEventListener('keydown', e => {
+        if (e.key === 'Enter') {
+          renderProducts();
+        }
+      });
+    </script>
+  </body>
+</html>
