@@ -34,6 +34,12 @@
             >&#128722;</span
           >
         </button>
+        <button class="login-btn" id="loginBtn" onclick="showAuthModal()">
+          Login
+        </button>
+        <button class="logout-btn" id="logoutBtn" onclick="logout()" style="display: none;">
+          Logout
+        </button>
       </div>
     </header>
     <div class="banner-slider" id="bannerSlider"></div>
@@ -41,7 +47,6 @@
     <main>
       <section class="products-list" id="productsList"></section>
     </main>
-    <!-- Product Details Modal -->
     <div class="modal" id="productModal">
       <div class="modal-box" id="productModalBox" style="max-width: 520px">
         <button
@@ -54,7 +59,6 @@
         <div id="modalContent"></div>
       </div>
     </div>
-    <!-- Cart/Wishlist/Checkout Modals -->
     <div class="modal" id="cartModal">
       <div class="modal-box">
         <button class="modal-close" onclick="closeModal('cartModal')">
@@ -99,6 +103,44 @@
       </div>
     </div>
     <div class="toast" id="toast"></div>
+    
+    <!-- Authentication Modal -->
+    <div class="modal" id="authModal">
+      <div class="modal-box">
+        <button class="modal-close" onclick="hideAuthModal()">&times;</button>
+        <div class="modal-header">Welcome to L'amour & Lumière</div>
+        
+        <!-- Login Form -->
+        <div id="loginForm">
+          <h3 style="margin-bottom: 1rem; color: #d79be2;">Login</h3>
+          <div style="margin-bottom: 1rem;">
+            <input type="email" id="loginEmail" placeholder="Email" style="width: 100%; padding: 0.5rem; border: 1px solid #ddd; border-radius: 8px; margin-bottom: 0.5rem;">
+            <input type="password" id="loginPassword" placeholder="Password" style="width: 100%; padding: 0.5rem; border: 1px solid #ddd; border-radius: 8px;">
+          </div>
+          <button onclick="handleLogin()" class="cart-btn" style="width: 100%; margin-bottom: 1rem;">Login</button>
+          <p style="text-align: center; margin: 0;">
+            Don't have an account? 
+            <a href="#" onclick="showRegisterForm()" style="color: #d79be2; text-decoration: none;">Register here</a>
+          </p>
+        </div>
+        
+        <!-- Register Form -->
+        <div id="registerForm" style="display: none;">
+          <h3 style="margin-bottom: 1rem; color: #d79be2;">Register</h3>
+          <div style="margin-bottom: 1rem;">
+            <input type="text" id="registerName" placeholder="Full Name" style="width: 100%; padding: 0.5rem; border: 1px solid #ddd; border-radius: 8px; margin-bottom: 0.5rem;">
+            <input type="email" id="registerEmail" placeholder="Email" style="width: 100%; padding: 0.5rem; border: 1px solid #ddd; border-radius: 8px; margin-bottom: 0.5rem;">
+            <input type="password" id="registerPassword" placeholder="Password" style="width: 100%; padding: 0.5rem; border: 1px solid #ddd; border-radius: 8px;">
+          </div>
+          <button onclick="handleRegister()" class="cart-btn" style="width: 100%; margin-bottom: 1rem;">Register</button>
+          <p style="text-align: center; margin: 0;">
+            Already have an account? 
+            <a href="#" onclick="showLoginForm()" style="color: #d79be2; text-decoration: none;">Login here</a>
+          </p>
+        </div>
+      </div>
+    </div>
+    
     <footer>
       <div>Made with &#10084; | Cute Shop &copy; 2025</div>
       <div class="footer-links">

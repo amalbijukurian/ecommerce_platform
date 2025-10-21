@@ -81,6 +81,24 @@ body {
 .icon-btn:hover {
   transform: scale(1.15) rotate(-7deg);
 }
+.login-btn, .logout-btn {
+  background: linear-gradient(135deg, #d6b6f6 55%, #ffb5ea 100%);
+  border: none;
+  outline: none;
+  color: #fff;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  border-radius: 12px;
+  padding: 0.4rem 1rem;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background 0.17s, transform 0.16s;
+  box-shadow: 0 2.5px 10px #ffe9fa77;
+}
+.login-btn:hover, .logout-btn:hover {
+  background: linear-gradient(135deg, #ffb5ea 65%, #d6b6f6 100%);
+  transform: scale(1.05);
+}
 .banner-slider {
   width: 100%;
   margin: 0 auto 1rem auto;
@@ -340,6 +358,9 @@ body {
   opacity: 1;
   pointer-events: auto;
   bottom: 4rem;
+}
+.toast.error {
+  background: linear-gradient(90deg, #ff6b6b, #ff8e8e);
 }
 footer {
   background: linear-gradient(90deg, #e0c3fc 50%, #ffb5ea 100%);
