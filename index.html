@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>L’amour & Lumière — Stationery & Gifts</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&family=Nunito:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header class="sticky-header">
+      <div class="logo">L’amour & Lumière</div>
+      <div class="header-actions">
+        <input
+          type="text"
+          id="searchInput"
+          placeholder="Search adorable finds..."
+        />
+        <button
+          class="icon-btn wishlist"
+          title="Wishlist"
+          id="wishlistBtn"
+          data-count="0"
+        >
+          <span style="font-size: var(--icon-size); color: #ff8bcc"
+            >&#10084;</span
+          >
+        </button>
+        <button class="icon-btn cart" title="Cart" id="cartBtn" data-count="0">
+          <span style="font-size: var(--icon-size); color: #864caa"
+            >&#128722;</span
+          >
+        </button>
+      </div>
+    </header>
+    <div class="banner-slider" id="bannerSlider"></div>
+    <div class="categories" id="categories"></div>
+    <main>
+      <section class="products-list" id="productsList"></section>
+    </main>
+    <!-- Product Details Modal -->
+    <div class="modal" id="productModal">
+      <div class="modal-box" id="productModalBox" style="max-width: 520px">
+        <button
+          class="modal-close"
+          onclick="closeModal('productModal')"
+          style="font-size: 2rem"
+        >
+          &times;
+        </button>
+        <div id="modalContent"></div>
+      </div>
+    </div>
+    <!-- Cart/Wishlist/Checkout Modals -->
+    <div class="modal" id="cartModal">
+      <div class="modal-box">
+        <button class="modal-close" onclick="closeModal('cartModal')">
+          &times;
+        </button>
+        <div class="modal-header">Your Cart</div>
+        <div id="cartItems"></div>
+        <div style="margin-top: 1rem">
+          <button
+            onclick="showCheckout()"
+            class="cart-btn"
+            style="font-size: 1.02rem"
+          >
+            Checkout
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="modal" id="wishlistModal">
+      <div class="modal-box">
+        <button class="modal-close" onclick="closeModal('wishlistModal')">
+          &times;
+        </button>
+        <div class="modal-header">Your Wishlist</div>
+        <div id="wishlistItems"></div>
+      </div>
+    </div>
+    <div class="modal" id="checkoutModal">
+      <div class="modal-box">
+        <button class="modal-close" onclick="closeModal('checkoutModal')">
+          &times;
+        </button>
+        <div class="modal-header">Order Summary</div>
+        <div id="orderSummary"></div>
+        <button
+          onclick="placeOrder()"
+          class="cart-btn"
+          style="margin-top: 1.2rem; font-size: 1.08rem"
+        >
+          Place Order
+        </button>
+      </div>
+    </div>
+    <div class="toast" id="toast"></div>
+    <footer>
+      <div>Made with &#10084; | Cute Shop &copy; 2025</div>
+      <div class="footer-links">
+        <a href="#">Instagram</a> · <a href="#">Twitter</a> ·
+        <a href="#">Email: hello@cuteshop.test</a>
+      </div>
+    </footer>
+    <script src="script.js"></script>
+  </body>
+</html>
